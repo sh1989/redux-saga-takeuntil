@@ -1,20 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BUTTON_ONE_CLICK, BUTTON_TWO_CLICK, BUTTON_THREE_CLICK } from './model/reducer';
+import { START, REQUEST, STOP } from './model/reducer';
 import './App.css';
 
-const App = ({ btnOneClick, btnTwoClick, btnThreeClick }) => (
+const App = ({ onStart, onIncrement, onStop, value }) => (
   <div className="App">
     <section>
-      <button onClick={btnOneClick}>1</button>
-      <button onClick={btnTwoClick}>2</button>
-      <button onClick={btnThreeClick}>3</button>
+      <button onClick={onStart}>Start</button>
+      <button onClick={onIncrement}>Increment</button>
+      <button onClick={onStop}>Stop</button>
     </section>
+    <h2>{value}</h2>
   </div>
 );
 
-export default connect(null, dispatch => ({
-  btnOneClick: () => dispatch({ type: BUTTON_ONE_CLICK}),
-  btnTwoClick: () => dispatch({ type: BUTTON_TWO_CLICK}),
-  btnThreeClick: () => dispatch({ type: BUTTON_THREE_CLICK})
-}))(App);
+export default connect(
+  state => ({
+    value: state.value
+  }),
+  dispatch => ({
+    onStart: () => dispatch({ type: START}),
+    onIncrement: () => dispatch({ type: REQUEST}),
+    onStop: () => dispatch({ type: STOP})
+  })
+)(App);

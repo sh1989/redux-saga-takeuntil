@@ -1,24 +1,22 @@
-import { takeEvery } from 'redux-saga';
-import { call } from 'redux-saga/effects';
-import { BUTTON_ONE_CLICK, BUTTON_TWO_CLICK, BUTTON_THREE_CLICK } from './reducer';
-import log from './api';
+import { all, cancel, fork, put, take, takeEvery } from 'redux-saga/effects';
+import { START, REQUEST, INCREMENT, STOP } from './reducer';
 
-export function* onButtonOneClick() {
-  yield call(log, '1');
+export function* doIncrement() {
+  yield put({ type: INCREMENT });
 }
 
-export function* onButtonTwoClick() {
-  yield call(log, '2');
-}
-
-export function* onButtonThreeClick() {
-  yield call(log, '3');
+export function* watcher() {
+  yield all([
+    takeEvery(REQUEST, doIncrement)
+  ]);
 }
 
 export default function* rootSaga() {
-  yield [
-    takeEvery(BUTTON_ONE_CLICK, onButtonOneClick),
-    takeEvery(BUTTON_TWO_CLICK, onButtonTwoClick),
-    takeEvery(BUTTON_THREE_CLICK, onButtonThreeClick)
-  ]
+  while (yield take(START)) {
+    console.log('starting');
+    const watchers = yield fork(watcher);
+    yield take(STOP);
+    console.log('finishing');
+    yield cancel(watchers);
+  }
 }
