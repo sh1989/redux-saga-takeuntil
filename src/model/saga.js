@@ -11,7 +11,7 @@ export function* watcher() {
   ]);
 }
 
-export default function* rootSaga() {
+export function* counter() {
   while (yield take(START)) {
     console.log('starting');
     const watchers = yield fork(watcher);
@@ -19,4 +19,10 @@ export default function* rootSaga() {
     console.log('finishing');
     yield cancel(watchers);
   }
+}
+
+export default function* rootSaga() {
+  yield all([
+    fork(counter)
+  ]);
 }
