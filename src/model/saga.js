@@ -11,18 +11,20 @@ export function* watcher() {
   ]);
 }
 
-export function* counter() {
-  while (yield take(START)) {
-    console.log('starting');
-    const watchers = yield fork(watcher);
-    yield take(STOP);
-    console.log('finishing');
+export function* performTakeUntil(startType, stopType, worker) {
+  while (yield take(startType)) {
+    const watchers = yield fork(worker);
+    yield take(stopType);
     yield cancel(watchers);
   }
 }
 
+export function takeUntil(startType, stopType, worker) {
+  return fork(performTakeUntil, startType, stopType, worker);
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(counter)
+    takeUntil(START, STOP, watcher)
   ]);
 }
