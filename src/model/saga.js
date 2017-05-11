@@ -1,5 +1,6 @@
-import { all, cancel, fork, put, take, takeEvery } from 'redux-saga/effects';
+import { all, put,takeEvery } from 'redux-saga/effects';
 import { START, REQUEST, INCREMENT, STOP } from './reducer';
+import { takeUntil } from 'redux-saga-takeuntil';
 
 export function* doIncrement() {
   yield put({ type: INCREMENT });
@@ -9,18 +10,6 @@ export function* watcher() {
   yield all([
     takeEvery(REQUEST, doIncrement)
   ]);
-}
-
-export function* performTakeUntil(startType, stopType, worker) {
-  while (yield take(startType)) {
-    const watchers = yield fork(worker);
-    yield take(stopType);
-    yield cancel(watchers);
-  }
-}
-
-export function takeUntil(startType, stopType, worker) {
-  return fork(performTakeUntil, startType, stopType, worker);
 }
 
 export default function* rootSaga() {
