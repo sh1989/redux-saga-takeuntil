@@ -1,0 +1,26 @@
+{
+  "name": "redux-saga-takeuntil",
+  "version": "0.0.1",
+  "description": "A utility to start a saga when a particular action is dispatched, and then cancel it when another action is dispatched",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sh1989/redux-saga-takeuntil.git"
+  },
+  "keywords": [
+    "redux",
+    "redux-saga",
+    "takeUntil"
+  ],
+  "author": "Sam Hogarth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sh1989/redux-saga-takeuntil/issues"
+  },
+  "homepage": "https://github.com/sh1989/redux-saga-takeuntil#readme"
+}
